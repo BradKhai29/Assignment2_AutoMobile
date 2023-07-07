@@ -8,6 +8,7 @@ namespace MyStoreWinApp
     public partial class frmReport : Form
     {
         public IRepository<Order> _order { get; set; }
+        public IRepository<OrderDetail> _orderDetail { get; set; }
         public frmReport()
         {
             InitializeComponent();
@@ -38,13 +39,28 @@ namespace MyStoreWinApp
         #region DataGridView
         private void DataGridView_Load(IList<Order> searchingSource)
         {
+            decimal DisplayTotalAmount = 0;
             IList<Order> source = searchingSource;
             if (source == null) source = new List<Order>();
-            if (source is IList<Order> orders)
+            if (source is List<Order> orders)
             {
-                var newSource = orders.Select(o => new { o.OrderId, o.member?.Email, o.OrderDate, o.RequiredDate, o.ShippedDate, o.Freight }).ToList();
+                orders.ForEach(order =>
+                {
+                    decimal totalAmount = 0;
+                    var orderDetails = _orderDetail.GetListByCondition(detail => detail.OrderId == order.OrderId);
+                    foreach (var detail in orderDetails)
+                    {
+                        totalAmount += detail.UnitPrice * detail.Quantity;
+                    }
+                    order.TotalAmount = totalAmount;
+                    DisplayTotalAmount += totalAmount;
+                });
+                var newSource = orders.Select(o => new { o.OrderId, o.member?.Email, o.OrderDate, o.TotalAmount, o.ShippedDate, o.Freight }).ToList();
                 dgv_Main.DataSource = newSource;
+                txtTotalIncome.Text = DisplayTotalAmount.ToString();
+                txtTotalOrders.Text = newSource.Count().ToString();
             }
+
             AutoFitDataGridItem(dgv_Main);
         }
 

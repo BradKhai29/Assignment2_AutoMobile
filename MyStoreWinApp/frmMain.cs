@@ -1033,7 +1033,8 @@ namespace MyStoreWinApp
         {
             reportForm = new frmReport
             {
-                _order = _order
+                _order = _order,
+                _orderDetail = _orderDetail
             };
             reportForm.Show();
         }

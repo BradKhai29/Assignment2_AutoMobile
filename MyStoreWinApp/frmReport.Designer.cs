@@ -38,8 +38,8 @@
             exitToolStripMenuItem = new ToolStripMenuItem();
             lbSpec3 = new Label();
             lbTotal = new Label();
-            txtSpec3 = new TextBox();
-            txtSpec2 = new TextBox();
+            txtTotalOrders = new TextBox();
+            txtTotalIncome = new TextBox();
             ((System.ComponentModel.ISupportInitialize) dgv_Main).BeginInit();
             menuStrip1.SuspendLayout();
             SuspendLayout();
@@ -155,25 +155,25 @@
             lbTotal.TabIndex = 36;
             lbTotal.Text = "Total Income";
             // 
-            // txtSpec3
+            // txtTotalOrders
             // 
-            txtSpec3.Anchor = AnchorStyles.Left;
-            txtSpec3.Enabled = false;
-            txtSpec3.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            txtSpec3.Location = new Point(13, 175);
-            txtSpec3.Name = "txtSpec3";
-            txtSpec3.Size = new Size(853, 33);
-            txtSpec3.TabIndex = 32;
+            txtTotalOrders.Anchor = AnchorStyles.Left;
+            txtTotalOrders.Enabled = false;
+            txtTotalOrders.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            txtTotalOrders.Location = new Point(13, 175);
+            txtTotalOrders.Name = "txtTotalOrders";
+            txtTotalOrders.Size = new Size(853, 33);
+            txtTotalOrders.TabIndex = 32;
             // 
-            // txtSpec2
+            // txtTotalIncome
             // 
-            txtSpec2.Anchor = AnchorStyles.Left;
-            txtSpec2.Enabled = false;
-            txtSpec2.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            txtSpec2.Location = new Point(13, 82);
-            txtSpec2.Name = "txtSpec2";
-            txtSpec2.Size = new Size(853, 33);
-            txtSpec2.TabIndex = 33;
+            txtTotalIncome.Anchor = AnchorStyles.Left;
+            txtTotalIncome.Enabled = false;
+            txtTotalIncome.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            txtTotalIncome.Location = new Point(13, 82);
+            txtTotalIncome.Name = "txtTotalIncome";
+            txtTotalIncome.Size = new Size(853, 33);
+            txtTotalIncome.TabIndex = 33;
             // 
             // frmReport
             // 
@@ -182,8 +182,8 @@
             ClientSize = new Size(878, 487);
             Controls.Add(lbSpec3);
             Controls.Add(lbTotal);
-            Controls.Add(txtSpec3);
-            Controls.Add(txtSpec2);
+            Controls.Add(txtTotalOrders);
+            Controls.Add(txtTotalIncome);
             Controls.Add(dgv_Main);
             Controls.Add(datePickStart);
             Controls.Add(datePickEnd);
@@ -214,7 +214,7 @@
         private ToolStripMenuItem exitToolStripMenuItem;
         private Label lbSpec3;
         private Label lbTotal;
-        private TextBox txtSpec3;
-        private TextBox txtSpec2;
+        private TextBox txtTotalOrders;
+        private TextBox txtTotalIncome;
     }
 }

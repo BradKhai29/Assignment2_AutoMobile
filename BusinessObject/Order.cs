@@ -25,6 +25,9 @@ namespace BusinessObject
 
         [DataType(DataType.Currency)]
         public decimal? Freight { get; set; }
+
+        [NotMapped]
+        public decimal TotalAmount { get; set; }
         #endregion
 
         #region Relationships

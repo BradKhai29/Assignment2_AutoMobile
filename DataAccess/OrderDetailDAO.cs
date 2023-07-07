@@ -27,6 +27,11 @@ namespace DataAccess
             return dbContext.OrderDetails.AsNoTracking().FirstOrDefault(order => condition(order));
         }
 
+        public override IList<OrderDetail> GetListByCondition(Func<OrderDetail, bool> condition)
+        {
+            return dbContext.OrderDetails.AsNoTracking().Where(condition).ToList();
+        }
+
         public override OrderDetail GetById(int id)
         {
             throw new NotImplementedException();
