@@ -9,12 +9,13 @@ namespace MyStoreWinApp
 {
     public partial class frmMain : Form
     {
-        #region Form
+        #region SubForm
         private frmMember memberForm;
         private frmCategory categoryForm;
         private frmProduct productForm;
         private frmOrder orderForm;
         private frmShopping shoppingForm;
+        private frmReport reportForm;
         #endregion
 
         #region Database_Repository
@@ -27,8 +28,9 @@ namespace MyStoreWinApp
         #endregion
 
         // In App Attribute
-        private readonly ISessionService sessionService = SessionService.Instance;
+        private readonly ISessionService _session = SessionService.Instance;
         private string currentToolStrip = nameof(toolStripProduct);
+        private string currentSection = nameof(Product);
         private static Color defaultToolStripColor = default;
         private static Color activeToolStripColor = default;
 
@@ -56,7 +58,7 @@ namespace MyStoreWinApp
         #region Load Form
         private void Form_Load(object sender, EventArgs e)
         {
-            var loginMember = sessionService.GetSessionData<Member>(SessionId.LoginMember);
+            var loginMember = _session.GetSessionData<Member>(SessionId.LoginMember);
             if (loginMember != null)
             {
                 // Display menuStrip
@@ -82,7 +84,7 @@ namespace MyStoreWinApp
                 toolStripShopping.Visible = true;
                 LoadFormAs(isGuest: true);
             }
-            DataGridView_LoadWithSection(_product, null, "Product");
+            DataGridView_LoadWithSection(_product, null, currentSection);
         }
 
         private void LoadFormAsAdmin()
@@ -96,15 +98,20 @@ namespace MyStoreWinApp
                     toolStrip.Visible = toolStrip != toolStripShopping;
                 }
             }
-            subMenus = toolStripProduct.DropDownItems;
-            foreach (var menu in subMenus) (menu as ToolStripMenuItem).Visible = true;
+            if (currentSection == nameof(Product))
+            {
+                SetCurrentToolStripAndCurrentSection(
+                    toolStrip: nameof(toolStripProduct),
+                    section: nameof(Product));
+            }
             menuItemEditProfile.Visible = false;
             toolStripOrder.Text = "Orders";
-            // Load check all
-            cbShowAll.Visible = true;
             // Load button section
-            btnNew.Visible = true;
-            btnDelete.Visible = true;
+            bool isDisplay = currentSection != nameof(Order) && currentSection != "Report";
+            DisplayDeleteAndNewButton(isDisplay);
+            DisplaySearchComponents(isDisplay);
+            // Load show all
+            cbShowAll.Visible = isDisplay && currentSection == nameof(Product);
         }
 
         private void LoadFormAs(bool isGuest)
@@ -129,6 +136,8 @@ namespace MyStoreWinApp
             cbShowAll.Visible = false;
             cbShowAll.Checked = false;
             if (isGuest) Reload_MenuStrip();
+            DisplaySearchComponents(true);
+            SetCurrentToolStripAndCurrentSection(nameof(toolStripProduct), section: nameof(Product));
         }
 
         /// <summary>
@@ -138,7 +147,7 @@ namespace MyStoreWinApp
         /// <returns>The Order List after filter</returns>
         private IList<Order> ResolveOrders(IList<Order> orders)
         {
-            var loginMember = sessionService.GetSessionData<Member>(SessionId.LoginMember);
+            var loginMember = _session.GetSessionData<Member>(SessionId.LoginMember);
             if (loginMember != null)
             {
                 bool isMember = loginMember.MemberId != 0;
@@ -166,7 +175,6 @@ namespace MyStoreWinApp
             toolStripProfile.Visible = true;
             toolStripProfile.Text = "Login";
 
-            menuItemAddProduct.Visible = false;
             var menuItems = toolStripProfile.DropDownItems;
             foreach (var item in menuItems)
             {
@@ -177,8 +185,13 @@ namespace MyStoreWinApp
             }
         }
 
-        private void Form_Load(string section)
+        private void Form_LoadWithSection(string section)
         {
+            var isAdmin = _session.GetSessionData<Member>(SessionId.LoginMember)?.MemberId == 0;
+            bool allowSearch = currentSection != "Report"
+                                && currentSection != nameof(Order);
+            DisplaySearchComponents(isDisplay: allowSearch);
+            DisplayDeleteAndNewButton(isDisplay: isAdmin && allowSearch);
             switch (section)
             {
                 case "Category":
@@ -256,6 +269,7 @@ namespace MyStoreWinApp
                             txtSpec4DataMember: null);
                     }
                     break;
+                case "Shopping":
                 case "Product":
                     if (source is IList<Product> products)
                     {
@@ -286,7 +300,7 @@ namespace MyStoreWinApp
                             txtSpec4DataMember: nameof(Member.Country));
                     }
                     break;
-                case nameof(toolStripReport):
+                case "Report":
                 case "Order":
                     if (source is IList<Order> orders)
                     {
@@ -310,8 +324,9 @@ namespace MyStoreWinApp
 
         private void Dgv_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            var loginMember = sessionService.GetSessionData<Member>(SessionId.LoginMember);
+            var loginMember = _session.GetSessionData<Member>(SessionId.LoginMember);
             if (loginMember == null) return;
+            bool isAdmin = loginMember.MemberId == 0;
 
             // If DataGridView has no row
             if (dgv_Main.Rows.Count == 0)
@@ -328,14 +343,14 @@ namespace MyStoreWinApp
                 switch (currentToolStrip)
                 {
                     case nameof(toolStripProduct):
-                        DisplayUpdateForm(updateItem, nameof(Product), false);
+                        if (isAdmin) DisplayUpdateForm(updateItem, nameof(Product), false);
                         break;
                     case nameof(toolStripCategory):
-                        DisplayUpdateForm(updateItem, nameof(Category), false);
+                        if (isAdmin) DisplayUpdateForm(updateItem, nameof(Category), false);
                         break;
 
                     case nameof(toolStripMember):
-                        DisplayUpdateForm(updateItem, nameof(Member), false);
+                        if (isAdmin) DisplayUpdateForm(updateItem, nameof(Member), false);
                         break;
 
                     case nameof(toolStripOrder):
@@ -456,12 +471,11 @@ namespace MyStoreWinApp
 
         private object GetItem(int rowIndex)
         {
-            var row = dgv_Main.Rows[rowIndex];
-            var itemIdColumn = row.Cells[0];
-            int itemId = 0;
+            var selectedRow = dgv_Main.Rows[rowIndex];
+            var itemIdColumn = selectedRow.Cells[0];
             try
             {
-                itemId = int.Parse($"{itemIdColumn.Value}");
+                int itemId = int.Parse($"{itemIdColumn.Value}");
                 switch (currentToolStrip)
                 {
                     case nameof(toolStripProduct):
@@ -476,12 +490,12 @@ namespace MyStoreWinApp
                     case nameof(toolStripOrder):
                         return _order.GetById(itemId);
 
-                    default: return null;
+                    default: return default;
                 }
             }
             catch (Exception)
             {
-                return null;
+                return default;
             }
         }
 
@@ -513,7 +527,7 @@ namespace MyStoreWinApp
                 var loginForm = new frmLogin
                 {
                     _auth = _member.DAO as MemberDAO,
-                    _session = sessionService
+                    _session = _session
                 };
 
                 loginForm.Show();
@@ -536,10 +550,6 @@ namespace MyStoreWinApp
                     break;
                 case nameof(toolStripMember):
                     menuItemAddMember_Click(sender, e);
-                    break;
-                case nameof(toolStripOrder):
-                    break;
-                case nameof(toolStripReport):
                     break;
             }
         }
@@ -621,16 +631,13 @@ namespace MyStoreWinApp
                     SearchCategory(selectChoiceIndex);
                     break;
 
+                case nameof(toolStripShopping):
                 case nameof(toolStripProduct):
                     SearchProduct(selectChoiceIndex);
                     break;
 
                 case nameof(toolStripMember):
                     SearchMember(selectChoiceIndex);
-                    break;
-
-                case nameof(toolStripOrder):
-                    SearchOrder(selectChoiceIndex);
                     break;
             }
             cbSearchChoice.SelectedIndex = selectChoiceIndex;
@@ -784,74 +791,80 @@ namespace MyStoreWinApp
             }
             else MessageBox.Show(searchResponse.Message, "Search Error");
         }
-
-        private void SearchOrder(int choiceIndex)
-        {
-            SearchHelper<Order> searchHelper = new SearchById<Order>
-            {
-                repository = _order,
-                Input = txtSearch.Text,
-                condition = o => $"{o.OrderId}".Contains(txtSearch.Text)
-            };
-            var searchResponse = searchHelper.Search();
-            if (searchResponse.IsSuccess)
-            {
-                DataGridView_LoadWithSection(null, searchResponse.Response, "Order");
-            }
-            else MessageBox.Show(searchResponse.Message, "Search Error");
-        }
         #endregion
 
         #region MenuStrip and MenuItem Event
         private void toolStrip_Click(object sender, EventArgs e)
         {
-            var isAdmin = sessionService.GetSessionData<Member>(SessionId.LoginMember)?.MemberId == 0;
+            var isAdmin = _session.GetSessionData<Member>(SessionId.LoginMember)?.MemberId == 0;
             cbShowAll.Visible = false;
-
-            bool allowSearch = currentToolStrip != nameof(toolStripReport)
-                                && currentToolStrip != nameof(toolStripOrder);
+            bool allowSearch = currentSection != "Report"
+                                && currentSection != nameof(Order);
             DisplaySearchComponents(isDisplay: allowSearch);
-            DisplayDeleteAndNewButton(isDisplay: isAdmin);
-            DisplayAsReportStatic(isDisplay: false);
+            DisplayDeleteAndNewButton(isDisplay: isAdmin && allowSearch);
             if (sender is ToolStripMenuItem menuStrip)
             {
                 if (menuStrip == toolStripProduct)
                 {
-                    currentToolStrip = nameof(toolStripProduct);
+                    SetCurrentToolStripAndCurrentSection(
+                        toolStrip: nameof(toolStripProduct),
+                        section: nameof(Product));
                     cbShowAll.Visible = isAdmin;
-                    Form_Load(nameof(Product));
+                    Form_LoadWithSection(nameof(Product));
                 }
                 if (menuStrip == toolStripMember)
                 {
-                    currentToolStrip = nameof(toolStripMember);
-                    Form_Load(nameof(Member));
+                    SetCurrentToolStripAndCurrentSection(
+                       toolStrip: nameof(toolStripMember),
+                       section: nameof(Member));
+                    Form_LoadWithSection(nameof(Member));
                 }
                 if (menuStrip == toolStripCategory)
                 {
-                    currentToolStrip = nameof(toolStripCategory);
-                    Form_Load(nameof(Category));
+                    SetCurrentToolStripAndCurrentSection(
+                        toolStrip: nameof(toolStripCategory),
+                        section: nameof(Category));
+                    Form_LoadWithSection(nameof(Category));
                 }
                 if (menuStrip == toolStripOrder)
                 {
-                    currentToolStrip = nameof(toolStripOrder);
+                    SetCurrentToolStripAndCurrentSection(
+                        toolStrip: nameof(toolStripOrder),
+                        section: nameof(Order));
                     DisplayDeleteAndNewButton(isDisplay: false);
                     DisplaySearchComponents(isDisplay: false);
-                    Form_Load(nameof(Order));
+                    Form_LoadWithSection(nameof(Order));
                 }
                 if (menuStrip == toolStripReport)
                 {
                     DisplayDeleteAndNewButton(isDisplay: false);
                     DisplaySearchComponents(isDisplay: false);
-                    DisplayAsReportStatic(isDisplay: true);
-                    currentToolStrip = nameof(toolStripReport);
+                    SetCurrentToolStripAndCurrentSection(
+                        toolStrip: nameof(toolStripReport),
+                        section: "Report");
                 }
                 if (menuStrip == toolStripShopping)
                 {
-                    currentToolStrip = nameof(toolStripShopping);
+                    SetCurrentToolStripAndCurrentSection(
+                        toolStrip: nameof(toolStripShopping),
+                        section: "Shopping");
                     DisplayShoppingForm();
+                }
+                if (menuStrip == toolStripReport)
+                {
+                    SetCurrentToolStripAndCurrentSection(
+                        toolStrip: nameof(toolStripReport),
+                        section: "Report");
+                    DisplayReportForm();
                 }
             }
             SetToolStripBackgroundColor();
+        }
+
+        private void SetCurrentToolStripAndCurrentSection(string toolStrip, string section)
+        {
+            currentToolStrip = toolStrip;
+            currentSection = section;
         }
 
         private void DisplaySearchComponents(bool isDisplay)
@@ -912,7 +925,7 @@ namespace MyStoreWinApp
         {
             if (memberForm == null)
             {
-                int id = sessionService.GetSessionData<Member>(SessionId.LoginMember).MemberId;
+                int id = _session.GetSessionData<Member>(SessionId.LoginMember).MemberId;
                 DisplayMemberForm(insert: false, memberId: id);
             }
             else memberForm.Activate();
@@ -921,7 +934,7 @@ namespace MyStoreWinApp
         private void menuItemLogout_Click(object sender, EventArgs e)
         {
             // Display MessageBox
-            sessionService.DeleteSessionData(SessionId.LoginMember);
+            _session.DeleteSessionData(SessionId.LoginMember);
             LoadFormAs(isGuest: true);
             Form_Load(sender, e);
         }
@@ -938,11 +951,12 @@ namespace MyStoreWinApp
         #region Display SubForm
         private void AddFormClosedSubEvent<T>(Form form, IRepository<T> source, string section) where T : class
         {
-            var LoginMember = sessionService.GetSessionData<Member>(SessionId.LoginMember);
+            var LoginMember = _session.GetSessionData<Member>(SessionId.LoginMember);
             bool isAdmin = (LoginMember != null && LoginMember.MemberId == 0);
             form.FormClosed += (sender, e) => DisposeForm(sender);
             form.FormClosed += (sender, e) => Form_Load(sender, e);
-            if (isAdmin) form.FormClosed += (sender, e) => DataGridView_LoadWithSection(source, null, section);
+            // If Admin, form must reload to see the update
+            if (isAdmin || LoginMember != null) form.FormClosed += (sender, e) => DataGridView_LoadWithSection(source, null, section);
         }
 
         private void DisplayMemberForm(bool insert, int memberId)
@@ -985,7 +999,7 @@ namespace MyStoreWinApp
 
         private void DisplayOrderForm(int orderId)
         {
-            var loginMember = sessionService.GetSessionData<Member>(SessionId.LoginMember);
+            var loginMember = _session.GetSessionData<Member>(SessionId.LoginMember);
             bool isAdmin = loginMember.MemberId == 0;
             orderForm = new frmOrder
             {
@@ -1009,61 +1023,15 @@ namespace MyStoreWinApp
             };
             shoppingForm.Show();
         }
-        #endregion
 
-        #region Report Statistic
-        private void DisplayAsReportStatic(bool isDisplay)
+        private void DisplayReportForm()
         {
-            lbStartDate.Visible = isDisplay;
-            lbEndDate.Visible = isDisplay;
-            btnSearchReport.Visible = isDisplay;
-            datePickStart.Visible = isDisplay;
-            txtStartDate.Visible = isDisplay;
-            datePickEnd.Visible = isDisplay;
-            txtEndDate.Visible = isDisplay;
-        }
-
-        private void btnSearchReport_Click(object sender, EventArgs e)
-            => SearchReport();
-
-        private void SearchReport()
-        {
-            string startDate = txtStartDate.Text;
-            string endDate = txtEndDate.Text;
-            bool startDateNotEmpty = !string.IsNullOrEmpty(startDate);
-            bool endDateNotEmpty = !string.IsNullOrEmpty(endDate);
-
-            DateTime start = startDateNotEmpty ? datePickStart.Value : datePickStart.MinDate;
-            DateTime end = endDateNotEmpty ? datePickEnd.Value : datePickEnd.MaxDate;
-
-            var condition = (Order o) => o.OrderDate.Date >= start.Date && o.OrderDate.Date <= end.Date;
-            DataGridView_LoadWithSection(null, _order.GetListByCondition(condition), nameof(toolStripReport));
-        }
-
-        private void datePick_ValueChanged(object sender, EventArgs e)
-        {
-            var formatter = DateTimeHelper.Instance;
-            if (sender is DateTimePicker picker)
+            reportForm = new frmReport
             {
-                bool pickStart = picker == datePickStart;
-                if (pickStart) txtStartDate.Text = formatter.ToStringWithCurrentOutputFormat(datePickStart.Value);
-                else txtEndDate.Text = formatter.ToStringWithCurrentOutputFormat(datePickEnd.Value);
-            }
+                _order = _order
+            };
+            reportForm.Show();
         }
-
-        private void DateTimeTextBox_Click(object sender, EventArgs e)
-        {
-            if (sender is TextBox textBox)
-            {
-                bool pickStart = textBox == txtStartDate;
-                if (pickStart) datePickStart.Select();
-                else datePickEnd.Select();
-            }
-            SendKeys.Send("%{DOWN}");
-        }
-
-        private void DateTimeTextBox_MouseClick(object sender, MouseEventArgs e)
-            => DateTimeTextBox_Click(sender, e);
         #endregion
     }
 }

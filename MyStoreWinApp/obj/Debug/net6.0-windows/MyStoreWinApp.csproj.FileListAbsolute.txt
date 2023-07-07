@@ -116,3 +116,4 @@ D:\STUDY\study_Programming\SelfStudy(C_sharp)\WINFORM_PROJECT\Assignment2_SaleMa
 D:\STUDY\study_Programming\SelfStudy(C_sharp)\WINFORM_PROJECT\Assignment2_SaleManagement\MyStoreWinApp\obj\Debug\net6.0-windows\MyStoreWinApp.Properties.Resources.resources
 D:\STUDY\study_Programming\SelfStudy(C_sharp)\WINFORM_PROJECT\Assignment2_SaleManagement\MyStoreWinApp\obj\Debug\net6.0-windows\MyStoreWinApp.frmOrder.resources
 D:\STUDY\study_Programming\SelfStudy(C_sharp)\WINFORM_PROJECT\Assignment2_SaleManagement\MyStoreWinApp\obj\Debug\net6.0-windows\MyStoreWinApp.frmShopping.resources
+D:\STUDY\study_Programming\SelfStudy(C_sharp)\WINFORM_PROJECT\Assignment2_SaleManagement\MyStoreWinApp\obj\Debug\net6.0-windows\MyStoreWinApp.frmReport.resources
