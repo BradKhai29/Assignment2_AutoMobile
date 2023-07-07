@@ -84,7 +84,6 @@ namespace MyStoreWinApp
                 toolStripShopping.Visible = true;
                 LoadFormAs(isGuest: true);
             }
-            DataGridView_LoadWithSection(_product, null, currentSection);
         }
 
         private void LoadFormAsAdmin()
@@ -116,6 +115,12 @@ namespace MyStoreWinApp
 
         private void LoadFormAs(bool isGuest)
         {
+            bool loadDataGridView = isGuest && (currentSection == nameof(Product) || currentSection == "Shopping)");
+            if (loadDataGridView)
+            {
+                DataGridView_LoadWithSection(_product, null, currentSection);
+                DisplaySearchComponents(true);
+            }
             // Load Button section
             DisplayDeleteAndNewButton(isDisplay: false);
 
@@ -136,8 +141,6 @@ namespace MyStoreWinApp
             cbShowAll.Visible = false;
             cbShowAll.Checked = false;
             if (isGuest) Reload_MenuStrip();
-            DisplaySearchComponents(true);
-            SetCurrentToolStripAndCurrentSection(nameof(toolStripProduct), section: nameof(Product));
         }
 
         /// <summary>
@@ -935,6 +938,8 @@ namespace MyStoreWinApp
         {
             // Display MessageBox
             _session.DeleteSessionData(SessionId.LoginMember);
+            DisplaySearchComponents(true);
+            SetCurrentToolStripAndCurrentSection(nameof(toolStripProduct), section: nameof(Product));
             LoadFormAs(isGuest: true);
             Form_Load(sender, e);
         }
