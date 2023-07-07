@@ -42,12 +42,19 @@ namespace MyStoreWinApp
             else btnInsertOrUpdate.Visible = false;
 
             var displayMember = _repo.GetById(UpdateMemberId);
-            txtMemberId.Text = $"{displayMember?.MemberId}";
             txtEmail.Text = $"{displayMember?.Email}";
             txtPassword.Text = $"{displayMember?.Password}";
             txtCompany.Text = $"{displayMember?.CompanyName}";
             txtCity.Text = $"{displayMember?.City}";
             txtCountry.Text = $"{displayMember?.Country}";
+        }
+
+        private void Enter_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == Convert.ToChar(Keys.Enter))
+            {
+                btnInsertOrUpdate_Click(sender, e);
+            }
         }
 
         private void btnInsertOrUpdate_Click(object sender, EventArgs e)

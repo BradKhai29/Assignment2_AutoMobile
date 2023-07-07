@@ -46,6 +46,7 @@ namespace MyStoreWinApp
             if (order.ShippedDate != null) mtxtShipDate.Text = formatter.ToStringWithCurrentOutputFormat(order.ShippedDate.Value);
             if (order.Freight != default) txtFreight.Text = decimal.ToInt32(order.Freight.Value).ToString();
 
+            btnDetail.Text = $"Order ID: {OrderId}";
             Form_Load(isAdmin: IsAdmin);
             EnableDateTimePicker(isAdmin: IsAdmin);
             Load_DataGridView(order);

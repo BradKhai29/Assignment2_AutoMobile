@@ -138,7 +138,7 @@
             lbSpec3.BackColor = SystemColors.Control;
             lbSpec3.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
             lbSpec3.ForeColor = Color.Black;
-            lbSpec3.Location = new Point(13, 147);
+            lbSpec3.Location = new Point(13, 57);
             lbSpec3.Name = "lbSpec3";
             lbSpec3.Size = new Size(115, 25);
             lbSpec3.TabIndex = 35;
@@ -149,18 +149,18 @@
             lbTotal.AutoSize = true;
             lbTotal.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
             lbTotal.ForeColor = Color.Black;
-            lbTotal.Location = new Point(13, 54);
+            lbTotal.Location = new Point(13, 149);
             lbTotal.Name = "lbTotal";
-            lbTotal.Size = new Size(122, 25);
+            lbTotal.Size = new Size(372, 25);
             lbTotal.TabIndex = 36;
-            lbTotal.Text = "Total Income";
+            lbTotal.Text = "Total Income (From StartDate to EndDate)";
             // 
             // txtTotalOrders
             // 
             txtTotalOrders.Anchor = AnchorStyles.Left;
             txtTotalOrders.Enabled = false;
             txtTotalOrders.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            txtTotalOrders.Location = new Point(13, 175);
+            txtTotalOrders.Location = new Point(13, 85);
             txtTotalOrders.Name = "txtTotalOrders";
             txtTotalOrders.Size = new Size(853, 33);
             txtTotalOrders.TabIndex = 32;
@@ -170,7 +170,7 @@
             txtTotalIncome.Anchor = AnchorStyles.Left;
             txtTotalIncome.Enabled = false;
             txtTotalIncome.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            txtTotalIncome.Location = new Point(13, 82);
+            txtTotalIncome.Location = new Point(13, 177);
             txtTotalIncome.Name = "txtTotalIncome";
             txtTotalIncome.Size = new Size(853, 33);
             txtTotalIncome.TabIndex = 33;
@@ -193,6 +193,7 @@
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "frmReport";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "frmReport";
             Load += Form_Load;
             ((System.ComponentModel.ISupportInitialize) dgv_Main).EndInit();

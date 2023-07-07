@@ -9,6 +9,7 @@ namespace MyStoreWinApp
     {
         public IRepository<Order> _order { get; set; }
         public IRepository<OrderDetail> _orderDetail { get; set; }
+
         public frmReport()
         {
             InitializeComponent();
@@ -33,7 +34,7 @@ namespace MyStoreWinApp
             DateTime end = endDateNotEmpty ? datePickEnd.Value : datePickEnd.MaxDate;
 
             var condition = (Order o) => o.OrderDate.Date >= start.Date && o.OrderDate.Date <= end.Date;
-            DataGridView_Load(_order.GetListByCondition(condition));
+            DataGridView_Load(_order.GetListByCondition(condition).OrderByDescending(o => o.OrderDate).ToList());
         }
 
         #region DataGridView

@@ -251,7 +251,7 @@ namespace MyStoreWinApp
             }
             else if (section == nameof(Product) && cbShowAll.Checked == false)
             {
-                source = repository.GetListByCondition(p => (p as Product).IsAvailable);
+                source = source.Where(p => (p as Product).IsAvailable).ToList();
             }
             if (source == null) source = new List<T>();
 

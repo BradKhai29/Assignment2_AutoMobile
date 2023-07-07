@@ -24,7 +24,7 @@ namespace BusinessObject
         public int CategoryId { get; set; }
 
         [Required]
-        [MaxLength(20)]
+        [MaxLength(20, ErrorMessage = nameof(Weight))]
         public string Weight { get; set; }
 
         [DataType(DataType.Currency)]

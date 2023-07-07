@@ -24,7 +24,7 @@ namespace MyStoreWinApp
         private void Form_Load(object sender, EventArgs e)
         {
             LoadWelcome();
-            DataGridView_Load(_product);
+            DataGridView_Load(_product, null);
             OrderDetail_Load();
         }
 
@@ -41,14 +41,14 @@ namespace MyStoreWinApp
         #endregion
 
         #region DataGridView
-        private void DataGridView_Load<T>(IRepository<T> repository) where T : class
+        private void DataGridView_Load(IRepository<Product> repository, IList<Product> searchingSource)
         {
             LoadSearchChoice();
             cbSearchChoice.SelectedIndex = 0;
-
-            IList<T> source = repository.GetAll();
-            source = repository.GetListByCondition(p => (p as Product).IsAvailable);
-            if (source == null) source = new List<T>();
+            bool doSearch = searchingSource != null;
+            IList<Product> source = doSearch ? searchingSource.Where(p => p.IsAvailable).ToList()
+                                        : repository.GetListByCondition(p => p.IsAvailable);
+            if (source == null) source = new List<Product>();
 
             if (source is IList<Product> products)
             {
@@ -140,6 +140,14 @@ namespace MyStoreWinApp
         #endregion
 
         #region Searching
+        private void Enter_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == Convert.ToChar(Keys.Enter))
+            {
+                btnSearch_Click(sender, e);
+            }
+        }
+
         private void btnSearch_Click(object sender, EventArgs e)
         {
             int selectChoiceIndex = cbSearchChoice.SelectedIndex;
@@ -206,7 +214,7 @@ namespace MyStoreWinApp
             searchResponse = searchHelper.Search();
             if (searchResponse.IsSuccess)
             {
-                dgv_Main.DataSource = searchResponse.Response;
+                DataGridView_Load(null, searchResponse.Response);
             }
             else MessageBox.Show(searchResponse.Message, "Search Error");
         }

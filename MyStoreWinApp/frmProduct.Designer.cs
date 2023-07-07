@@ -64,6 +64,7 @@
             txtProductName.Name = "txtProductName";
             txtProductName.Size = new Size(274, 29);
             txtProductName.TabIndex = 1;
+            txtProductName.KeyPress += Enter_KeyPress;
             // 
             // label1
             // 
@@ -124,6 +125,7 @@
             txtPrice.Name = "txtPrice";
             txtPrice.Size = new Size(274, 29);
             txtPrice.TabIndex = 3;
+            txtPrice.KeyPress += Enter_KeyPress;
             // 
             // label4
             // 
@@ -142,6 +144,7 @@
             txtInStock.Name = "txtInStock";
             txtInStock.Size = new Size(274, 29);
             txtInStock.TabIndex = 4;
+            txtInStock.KeyPress += Enter_KeyPress;
             // 
             // label5
             // 
@@ -160,6 +163,7 @@
             txtWeight.Name = "txtWeight";
             txtWeight.Size = new Size(274, 29);
             txtWeight.TabIndex = 5;
+            txtWeight.KeyPress += Enter_KeyPress;
             // 
             // cbCategory
             // 

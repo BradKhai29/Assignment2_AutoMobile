@@ -49,11 +49,9 @@
             dgv_OrderDetail = new DataGridView();
             btnRemoveOutOfOrder = new Button();
             btnAddToOrder = new Button();
-            btnSearch = new Button();
             btnDecrease = new Button();
             btnIncrease = new Button();
             btnTotalPrice = new Button();
-            vScrollBar1 = new VScrollBar();
             btnPayment = new Button();
             menuStripMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize) dgv_Main).BeginInit();
@@ -74,7 +72,9 @@
             // toolStripWelcome
             // 
             toolStripWelcome.BackColor = SystemColors.Control;
+            toolStripWelcome.Enabled = false;
             toolStripWelcome.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            toolStripWelcome.ForeColor = SystemColors.Desktop;
             toolStripWelcome.Name = "toolStripWelcome";
             toolStripWelcome.Size = new Size(71, 29);
             toolStripWelcome.Text = "Hello";
@@ -109,18 +109,19 @@
             txtSearch.Anchor = AnchorStyles.Left;
             txtSearch.CharacterCasing = CharacterCasing.Lower;
             txtSearch.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            txtSearch.Location = new Point(12, 314);
+            txtSearch.Location = new Point(299, 313);
             txtSearch.Name = "txtSearch";
             txtSearch.PlaceholderText = "Enter to Search";
-            txtSearch.Size = new Size(281, 33);
+            txtSearch.Size = new Size(570, 33);
             txtSearch.TabIndex = 7;
+            txtSearch.KeyPress += Enter_KeyPress;
             // 
             // cbSearchChoice
             // 
             cbSearchChoice.DropDownStyle = ComboBoxStyle.DropDownList;
             cbSearchChoice.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
             cbSearchChoice.FormattingEnabled = true;
-            cbSearchChoice.Location = new Point(12, 275);
+            cbSearchChoice.Location = new Point(12, 313);
             cbSearchChoice.Name = "cbSearchChoice";
             cbSearchChoice.Size = new Size(281, 33);
             cbSearchChoice.TabIndex = 9;
@@ -264,7 +265,7 @@
             dgv_OrderDetail.Anchor =  AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgv_OrderDetail.BackgroundColor = SystemColors.Control;
             dgv_OrderDetail.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_OrderDetail.Location = new Point(619, 120);
+            dgv_OrderDetail.Location = new Point(619, 89);
             dgv_OrderDetail.Name = "dgv_OrderDetail";
             dgv_OrderDetail.ReadOnly = true;
             dgv_OrderDetail.RowTemplate.Height = 25;
@@ -277,7 +278,7 @@
             btnRemoveOutOfOrder.Anchor = AnchorStyles.Right;
             btnRemoveOutOfOrder.BackColor = Color.FromArgb(  255,   192,   192);
             btnRemoveOutOfOrder.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            btnRemoveOutOfOrder.Location = new Point(839, 81);
+            btnRemoveOutOfOrder.Location = new Point(839, 50);
             btnRemoveOutOfOrder.Name = "btnRemoveOutOfOrder";
             btnRemoveOutOfOrder.Size = new Size(196, 33);
             btnRemoveOutOfOrder.TabIndex = 6;
@@ -290,33 +291,20 @@
             btnAddToOrder.Anchor = AnchorStyles.Right;
             btnAddToOrder.BackColor = SystemColors.ActiveCaption;
             btnAddToOrder.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            btnAddToOrder.Location = new Point(430, 314);
+            btnAddToOrder.Location = new Point(875, 313);
             btnAddToOrder.Name = "btnAddToOrder";
-            btnAddToOrder.Size = new Size(128, 33);
+            btnAddToOrder.Size = new Size(160, 33);
             btnAddToOrder.TabIndex = 6;
             btnAddToOrder.Text = "Add to Order";
             btnAddToOrder.UseVisualStyleBackColor = false;
             btnAddToOrder.Click += btnAddToOrder_Click;
-            // 
-            // btnSearch
-            // 
-            btnSearch.Anchor = AnchorStyles.Right;
-            btnSearch.BackColor = Color.Silver;
-            btnSearch.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            btnSearch.Location = new Point(299, 313);
-            btnSearch.Name = "btnSearch";
-            btnSearch.Size = new Size(128, 34);
-            btnSearch.TabIndex = 19;
-            btnSearch.Text = "Search";
-            btnSearch.UseVisualStyleBackColor = false;
-            btnSearch.Click += btnSearch_Click;
             // 
             // btnDecrease
             // 
             btnDecrease.Anchor = AnchorStyles.Right;
             btnDecrease.BackColor = SystemColors.ActiveBorder;
             btnDecrease.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            btnDecrease.Location = new Point(619, 81);
+            btnDecrease.Location = new Point(619, 50);
             btnDecrease.Name = "btnDecrease";
             btnDecrease.Size = new Size(91, 33);
             btnDecrease.TabIndex = 6;
@@ -329,7 +317,7 @@
             btnIncrease.Anchor = AnchorStyles.Right;
             btnIncrease.BackColor = SystemColors.ActiveBorder;
             btnIncrease.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            btnIncrease.Location = new Point(716, 81);
+            btnIncrease.Location = new Point(716, 50);
             btnIncrease.Name = "btnIncrease";
             btnIncrease.Size = new Size(91, 33);
             btnIncrease.TabIndex = 6;
@@ -343,7 +331,7 @@
             btnTotalPrice.BackColor = SystemColors.ActiveCaption;
             btnTotalPrice.Enabled = false;
             btnTotalPrice.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            btnTotalPrice.Location = new Point(619, 284);
+            btnTotalPrice.Location = new Point(619, 253);
             btnTotalPrice.Name = "btnTotalPrice";
             btnTotalPrice.Size = new Size(319, 33);
             btnTotalPrice.TabIndex = 6;
@@ -351,19 +339,12 @@
             btnTotalPrice.UseVisualStyleBackColor = false;
             btnTotalPrice.Click += btnRemoveOutOfOrder_Click;
             // 
-            // vScrollBar1
-            // 
-            vScrollBar1.Location = new Point(587, 33);
-            vScrollBar1.Name = "vScrollBar1";
-            vScrollBar1.Size = new Size(20, 319);
-            vScrollBar1.TabIndex = 21;
-            // 
             // btnPayment
             // 
             btnPayment.Anchor = AnchorStyles.Right;
             btnPayment.BackColor = SystemColors.ActiveBorder;
             btnPayment.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            btnPayment.Location = new Point(944, 284);
+            btnPayment.Location = new Point(944, 253);
             btnPayment.Name = "btnPayment";
             btnPayment.Size = new Size(91, 33);
             btnPayment.TabIndex = 6;
@@ -377,8 +358,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.AppWorkspace;
             ClientSize = new Size(1047, 540);
-            Controls.Add(vScrollBar1);
-            Controls.Add(btnSearch);
             Controls.Add(dgv_OrderDetail);
             Controls.Add(lbSpec4);
             Controls.Add(lbSpec3);
@@ -446,11 +425,9 @@
         private DataGridView dgv_OrderDetail;
         private Button btnRemoveOutOfOrder;
         private Button btnAddToOrder;
-        private Button btnSearch;
         private Button btnDecrease;
         private Button btnIncrease;
         private Button btnTotalPrice;
-        private VScrollBar vScrollBar1;
         private Button btnPayment;
         private ToolStripMenuItem shoppingToolStripMenuItem;
     }

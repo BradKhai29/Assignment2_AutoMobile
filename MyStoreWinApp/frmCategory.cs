@@ -23,6 +23,14 @@ namespace MyStoreWinApp
             txtCategoryName.Text = DoInsert ? "" : _repo.GetById(UpdateCategoryId).CategoryName;
         }
 
+        private void Enter_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == Convert.ToChar(Keys.Enter))
+            {
+                btnCreateOrSave_Click(sender, e);
+            }
+        }
+
         private void btnCreateOrSave_Click(object sender, EventArgs e)
         {
             try
@@ -50,9 +58,9 @@ namespace MyStoreWinApp
                 {
                     string oldCategoryName = _repo.GetById(UpdateCategoryId).CategoryName;
                     string newCategoryName = newCategory.CategoryName;
-                    
+
                     bool categoryNameIsUpdate = string.Compare(oldCategoryName, newCategoryName, ignoreCase: true) != 0;
-                    if(categoryNameIsUpdate && categoryWithSameName != null)
+                    if (categoryNameIsUpdate && categoryWithSameName != null)
                     {
                         MessageBox.Show($"The category with the same name is already existed", "Error");
                         return;

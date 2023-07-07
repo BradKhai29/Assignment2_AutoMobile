@@ -13,9 +13,18 @@ namespace MyStoreWinApp.Utility
         {
             if (value == null) return "";
             var stringBuilder = new StringBuilder();
-            value = Regex.Replace(value, "\\s+", " ").ToLower();
-            stringBuilder.Append(value.Substring(0, 1).ToUpper());
-            stringBuilder.Append(value.Substring(1));
+            value = value.Trim().ToLower();
+            var tokens = value.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            for(int i = 0; i < tokens.Length; i++)
+            {
+                var token = tokens[i];
+                if(i == 0)
+                {
+                    stringBuilder.Append(token.Substring(0, 1).ToUpper());
+                    stringBuilder.Append(token.Substring(1)).Append(' ');
+                }
+                else stringBuilder.Append(token.ToLower()).Append(' ');
+            }
 
             return stringBuilder.ToString().TrimEnd();
         }
@@ -23,15 +32,17 @@ namespace MyStoreWinApp.Utility
         public static string ToCapitalCase(this string value)
         {
             var stringBuilder = new StringBuilder();
-            value = Regex.Replace(value, "\\s+", " ").ToLower();
-            var tokens = value.Split(" ");
-            foreach( var token in tokens )
+            value = value.Trim().ToLower();
+            var tokens = value.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            for(int i = 0; i < tokens.Length; i++)
             {
+                var token = tokens[i];
                 stringBuilder.Append(token.Substring(0, 1).ToUpper());
-                stringBuilder.Append(token.Substring(1)).Append(" ");
+                if (i != tokens.Length - 1) stringBuilder.Append(token.Substring(1)).Append(' ');
+                else stringBuilder.Append(token.Substring(1));
             }
 
-            return stringBuilder.ToString().TrimEnd();
+            return stringBuilder.ToString();
         }
     }
 }

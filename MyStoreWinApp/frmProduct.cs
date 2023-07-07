@@ -30,9 +30,18 @@ namespace MyStoreWinApp
             var categoryNames = _category.GetAll().Select(c => c.CategoryName).ToArray();
             cbCategory.Items.AddRange(categoryNames);
             cbCategory.Text = DoInsert ? "" : _category.GetById(productCategoryId!.Value).CategoryName;
+            cbAvailable.Visible = !DoInsert;
             cbAvailable.Checked = DoInsert ? true : product!.IsAvailable;
             // Button section
             btnCreateOrUpdate.Text = DoInsert ? "Create" : "Update";
+        }
+
+        private void Enter_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == Convert.ToChar(Keys.Enter))
+            {
+                btnCreateOrUpdate_Click(sender, e);
+            }
         }
 
         private void btnCreateOrUpdate_Click(object sender, EventArgs e)
@@ -42,7 +51,9 @@ namespace MyStoreWinApp
                 int? selectCategoryId = _category.GetByCondition(c => c.CategoryName == cbCategory.Text)?.CategoryId;
                 if (!selectCategoryId.HasValue)
                 {
-                    MessageBox.Show($"Category Field is required, please Select one", "Error");
+                    string message = "Category Field is required, please Select one";
+                    if(cbCategory.Items.Count == 0) message = "No Category found in Database, please create one then comeback the product create progress";
+                    MessageBox.Show(message, "Error");
                     return;
                 }
                 var product = new Product

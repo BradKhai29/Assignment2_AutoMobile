@@ -16,6 +16,7 @@ namespace MyStoreWinApp.Utility
         private BuiltInFormat(string format) => Format = format;
 
         public static readonly BuiltInFormat ddMMyyyy = new BuiltInFormat("dd/MM/yyyy");
+        public static readonly BuiltInFormat ddMMyyyy_HHmmss = new BuiltInFormat("dd/MM/yyyy HH:mm:ss");
         public static readonly BuiltInFormat Default = ddMMyyyy;
         public static readonly BuiltInFormat MMddyyyy = new BuiltInFormat("MM/dd/yyyy");
         public static readonly BuiltInFormat ddMMyy = new BuiltInFormat("dd/MM/yy");
@@ -27,6 +28,8 @@ namespace MyStoreWinApp.Utility
 
         private static readonly DateTimeHelper Default = new DateTimeHelper();
         public static DateTimeHelper Instance { get => Default; }
+
+        public DateTimeHelper() { }
 
         /// <summary>
         /// Return a string that represent for the inputDateTime based on this instance OutputFormat

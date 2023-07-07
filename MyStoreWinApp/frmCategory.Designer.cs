@@ -64,6 +64,7 @@
             txtCategoryName.Name = "txtCategoryName";
             txtCategoryName.Size = new Size(274, 29);
             txtCategoryName.TabIndex = 8;
+            txtCategoryName.KeyPress += Enter_KeyPress;
             // 
             // btnCategory
             // 
@@ -92,7 +93,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(361, 313);
+            ClientSize = new Size(361, 268);
             Controls.Add(label1);
             Controls.Add(btnCancel);
             Controls.Add(btnCreateOrSave);
