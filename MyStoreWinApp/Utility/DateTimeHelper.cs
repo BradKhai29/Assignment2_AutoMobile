@@ -40,10 +40,10 @@ namespace MyStoreWinApp.Utility
         ///     When <paramref name="instance" /> is null
         /// </exception>
         /// <returns>string represent for the inputDateTime</returns>
-        public string ToStringWithCurrentOutputFormat(DateTime inputDateTime)
+        public string ToStringWithCurrentOutputFormat(DateTime? inputDateTime)
         {
             if (OutputFormat is null) throw new ArgumentNullException("Please input valid BuiltInFormat");
-            return inputDateTime.ToString(OutputFormat.Format);
+            return inputDateTime.HasValue ? inputDateTime?.ToString(OutputFormat.Format) : "";
         }
 
         public string ToStringWithFormat(DateTime? inputDateTime, BuiltInFormat format)

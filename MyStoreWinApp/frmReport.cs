@@ -10,6 +10,7 @@ namespace MyStoreWinApp
         public IRepository<Order> _order { get; set; }
         public IRepository<OrderDetail> _orderDetail { get; set; }
 
+        private static readonly DateTimeHelper formatter = DateTimeHelper.Instance;
         public frmReport()
         {
             InitializeComponent();
@@ -56,7 +57,16 @@ namespace MyStoreWinApp
                     order.TotalAmount = totalAmount;
                     DisplayTotalAmount += totalAmount;
                 });
-                var newSource = orders.Select(o => new { o.OrderId, o.Member?.Email, o.OrderDate, o.TotalAmount, o.ShippedDate, o.Freight }).ToList();
+                var outputFormat = BuiltInFormat.ddMMyyyy_HHmmss;
+                var newSource = orders.Select(o => new
+                {
+                    o.OrderId,
+                    o.Member?.Email,
+                    OrderDate = formatter.ToStringWithFormat(o.OrderDate, outputFormat),
+                    RequiredDate = formatter.ToStringWithCurrentOutputFormat(o.RequiredDate),
+                    ShippedDate = formatter.ToStringWithCurrentOutputFormat(o.ShippedDate),
+                    o.Freight
+                }).ToList();
                 dgv_Main.DataSource = newSource;
                 txtTotalIncome.Text = DisplayTotalAmount.ToString();
                 txtTotalOrders.Text = newSource.Count().ToString();
@@ -80,7 +90,6 @@ namespace MyStoreWinApp
         #region DateTimePicker
         private void datePick_ValueChanged(object sender, EventArgs e)
         {
-            var formatter = DateTimeHelper.Instance;
             if (sender is DateTimePicker picker)
             {
                 bool pickStart = picker == datePickStart;

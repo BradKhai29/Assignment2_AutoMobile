@@ -40,6 +40,8 @@
             lbTotal = new Label();
             txtTotalOrders = new TextBox();
             txtTotalIncome = new TextBox();
+            label1 = new Label();
+            label2 = new Label();
             ((System.ComponentModel.ISupportInitialize) dgv_Main).BeginInit();
             menuStrip1.SuspendLayout();
             SuspendLayout();
@@ -175,11 +177,37 @@
             txtTotalIncome.Size = new Size(853, 33);
             txtTotalIncome.TabIndex = 33;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.BackColor = SystemColors.Control;
+            label1.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label1.ForeColor = Color.Black;
+            label1.Location = new Point(12, 235);
+            label1.Name = "label1";
+            label1.Size = new Size(206, 25);
+            label1.TabIndex = 35;
+            label1.Text = "Start Date (OrderDate)";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.BackColor = SystemColors.Control;
+            label2.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label2.ForeColor = Color.Black;
+            label2.Location = new Point(299, 235);
+            label2.Name = "label2";
+            label2.Size = new Size(197, 25);
+            label2.TabIndex = 35;
+            label2.Text = "End Date (OrderDate)";
+            // 
             // frmReport
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(878, 487);
+            Controls.Add(label2);
+            Controls.Add(label1);
             Controls.Add(lbSpec3);
             Controls.Add(lbTotal);
             Controls.Add(txtTotalOrders);
@@ -217,5 +245,7 @@
         private Label lbTotal;
         private TextBox txtTotalOrders;
         private TextBox txtTotalIncome;
+        private Label label1;
+        private Label label2;
     }
 }

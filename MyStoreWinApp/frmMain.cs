@@ -317,8 +317,8 @@ namespace MyStoreWinApp
                             o.OrderId,
                             o.Member?.Email,
                             OrderDate = formatter.ToStringWithFormat(o.OrderDate, outputFormat),
-                            RequiredDate = formatter.ToStringWithFormat(o.RequiredDate, outputFormat),
-                            ShippedDate = formatter.ToStringWithFormat(o.ShippedDate, outputFormat),
+                            RequiredDate = formatter.ToStringWithCurrentOutputFormat(o.RequiredDate),
+                            ShippedDate = formatter.ToStringWithCurrentOutputFormat(o.ShippedDate),
                             o.Freight
                         }).ToList();
                         dgv_Main.DataSource = newSource;
