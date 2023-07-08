@@ -19,7 +19,7 @@ namespace MyStoreWinApp
         private void Form_Load(object sender, EventArgs e)
         {
             btnCreateOrSave.Text = DoInsert ? "Create" : "Update";
-            btnCategory.Text = DoInsert ? "CATEGORY FORM" : $"CategoryId: {UpdateCategoryId}";
+            btnCategory.Text = DoInsert ? "CATEGORY FORM" : $"Category ID: {UpdateCategoryId}";
             txtCategoryName.Text = DoInsert ? "" : _repo.GetById(UpdateCategoryId).CategoryName;
         }
 
@@ -40,14 +40,17 @@ namespace MyStoreWinApp
                     CategoryName = txtCategoryName.Text.ToNormalCase()
                 };
 
-                Validator.ValidateObject(newCategory, new ValidationContext(newCategory), validateAllProperties: true);
+                Validator.ValidateObject(
+                    instance: newCategory,
+                    validationContext: new ValidationContext(newCategory),
+                    validateAllProperties: true);
 
                 // Check similar exist CategoryName
                 var condition = (Category c) => string.Compare(c.CategoryName, newCategory.CategoryName, ignoreCase: true) == 0;
-                var categoryWithSameName = _repo.GetByCondition(condition);
+                var categoryWithSameName = _repo.GetByCondition(condition) != null;
                 if (DoInsert)
                 {
-                    if (categoryWithSameName != null)
+                    if (categoryWithSameName)
                     {
                         MessageBox.Show($"The category with the same name is already existed", "Error");
                         return;
@@ -60,7 +63,7 @@ namespace MyStoreWinApp
                     string newCategoryName = newCategory.CategoryName;
 
                     bool categoryNameIsUpdate = string.Compare(oldCategoryName, newCategoryName, ignoreCase: true) != 0;
-                    if (categoryNameIsUpdate && categoryWithSameName != null)
+                    if (categoryNameIsUpdate && categoryWithSameName)
                     {
                         MessageBox.Show($"The category with the same name is already existed", "Error");
                         return;

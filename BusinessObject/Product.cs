@@ -41,6 +41,7 @@ namespace BusinessObject
 
         [NotMapped]
         public int OrderQuantity { get; set; } = 1;
+
         #region Relationships
         [ForeignKey(nameof(CategoryId))]
         public Category Category { get; set; }

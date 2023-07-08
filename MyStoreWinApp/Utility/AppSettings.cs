@@ -22,9 +22,9 @@ public sealed class AppSettings
     #endregion
 
     #region Config Variable
-    private readonly string JsonFile = "appsettings.json";
+    private readonly string jsonFile = "appsettings.json";
     private readonly string connectionName = "Default";
-    private readonly string DatabaseName = "Assignment2_AutoMobile";
+    private readonly string databaseName = "Assignment2_AutoMobile";
     #endregion
 
     #region Property
@@ -37,7 +37,7 @@ public sealed class AppSettings
         DirectoryHelper.SetDirectory();
         var configBuilder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(path: JsonFile);
+            .AddJsonFile(path: jsonFile);
 
         IConfigurationRoot configRoot = configBuilder.Build();
         
@@ -49,7 +49,7 @@ public sealed class AppSettings
     {
         // Get connectionString and modify the DatabaseName
         return configurationRoot.GetConnectionString(name: connectionName)
-                                .Replace(oldValue: "[DatabaseName]", newValue: DatabaseName);
+                                .Replace(oldValue: "[DatabaseName]", newValue: databaseName);
     }
 
     private Member GetAdminAccount(IConfigurationRoot configurationRoot)
@@ -58,7 +58,7 @@ public sealed class AppSettings
         string Email = configurationRoot.GetSection(nameof(Admin))["Email"];
         string Password = configurationRoot.GetSection(nameof(Admin))["Password"];
 
-        var account = new Member { MemberId = int.Parse(MemberId), Password = Password, Email = Email };
-        return account;
+        var adminAccount = new Member { MemberId = int.Parse(MemberId), Password = Password, Email = Email };
+        return adminAccount;
     }
 }

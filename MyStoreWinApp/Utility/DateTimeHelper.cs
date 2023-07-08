@@ -46,6 +46,12 @@ namespace MyStoreWinApp.Utility
             return inputDateTime.ToString(OutputFormat.Format);
         }
 
+        public string ToStringWithFormat(DateTime? inputDateTime, BuiltInFormat format)
+        {
+            if (format is null) throw new ArgumentNullException("Please input valid BuiltInFormat");
+            return inputDateTime.HasValue ? inputDateTime?.ToString(format.Format) : "";
+        }
+
         public DateTime ToDateTimeWithFormat(string input)
         {
             if (OutputFormat is null) throw new ArgumentNullException("Please input valid BuiltInFormat");

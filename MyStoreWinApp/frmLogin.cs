@@ -15,6 +15,19 @@ namespace MyStoreWinApp
             InitializeComponent();
         }
 
+        private void Enter_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == Convert.ToChar(Keys.Enter))
+            {
+                ProcessLogin();
+            }
+        }
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            ProcessLogin();
+        }
+
         private void ProcessLogin()
         {
             Login login = new Login
@@ -47,19 +60,6 @@ namespace MyStoreWinApp
                 }
                 else MessageBox.Show("Email format is invalid", "Login Error");
             }
-        }
-
-        private void Enter_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == Convert.ToChar(Keys.Enter))
-            {
-                ProcessLogin();
-            }
-        }
-
-        private void btnLogin_Click(object sender, EventArgs e)
-        {
-            ProcessLogin();
         }
 
         private void btnCancel_Click(object sender, EventArgs e) => Close();

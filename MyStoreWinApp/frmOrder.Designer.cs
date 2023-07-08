@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            btnOrder = new Button();
+            btnOrderTitle = new Button();
             btnDetail = new Button();
             lbTotal = new Label();
             txtTotal = new TextBox();
@@ -50,24 +50,24 @@
             ((System.ComponentModel.ISupportInitialize) dgv_Detail).BeginInit();
             SuspendLayout();
             // 
-            // btnOrder
+            // btnOrderTitle
             // 
-            btnOrder.BackColor = Color.FromArgb(  255,   192,   128);
-            btnOrder.Dock = DockStyle.Top;
-            btnOrder.Enabled = false;
-            btnOrder.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            btnOrder.Location = new Point(0, 0);
-            btnOrder.Name = "btnOrder";
-            btnOrder.Size = new Size(687, 50);
-            btnOrder.TabIndex = 4;
-            btnOrder.Text = "ORDER DETAIL FORM";
-            btnOrder.UseVisualStyleBackColor = false;
+            btnOrderTitle.BackColor = Color.FromArgb(  255,   192,   128);
+            btnOrderTitle.Dock = DockStyle.Top;
+            btnOrderTitle.Enabled = false;
+            btnOrderTitle.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
+            btnOrderTitle.Location = new Point(0, 0);
+            btnOrderTitle.Name = "btnOrderTitle";
+            btnOrderTitle.Size = new Size(687, 50);
+            btnOrderTitle.TabIndex = 4;
+            btnOrderTitle.Text = "ORDER DETAIL FORM";
+            btnOrderTitle.UseVisualStyleBackColor = false;
             // 
             // btnDetail
             // 
             btnDetail.Enabled = false;
             btnDetail.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
-            btnDetail.ForeColor = SystemColors.Desktop;
+            btnDetail.ForeColor = SystemColors.ActiveCaptionText;
             btnDetail.Location = new Point(12, 275);
             btnDetail.Name = "btnDetail";
             btnDetail.Size = new Size(663, 37);
@@ -79,7 +79,7 @@
             // 
             lbTotal.AutoSize = true;
             lbTotal.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            lbTotal.Location = new Point(18, 74);
+            lbTotal.Location = new Point(12, 74);
             lbTotal.Name = "lbTotal";
             lbTotal.Size = new Size(128, 25);
             lbTotal.TabIndex = 6;
@@ -89,9 +89,9 @@
             // 
             txtTotal.Enabled = false;
             txtTotal.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            txtTotal.Location = new Point(147, 74);
+            txtTotal.Location = new Point(141, 74);
             txtTotal.Name = "txtTotal";
-            txtTotal.Size = new Size(180, 33);
+            txtTotal.Size = new Size(187, 33);
             txtTotal.TabIndex = 7;
             // 
             // dgv_Detail
@@ -143,7 +143,7 @@
             // 
             lbOrderDate.AutoSize = true;
             lbOrderDate.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            lbOrderDate.Location = new Point(18, 131);
+            lbOrderDate.Location = new Point(12, 131);
             lbOrderDate.Name = "lbOrderDate";
             lbOrderDate.Size = new Size(107, 25);
             lbOrderDate.TabIndex = 6;
@@ -162,9 +162,9 @@
             // 
             txtOrderDate.Enabled = false;
             txtOrderDate.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            txtOrderDate.Location = new Point(147, 131);
+            txtOrderDate.Location = new Point(141, 131);
             txtOrderDate.Name = "txtOrderDate";
-            txtOrderDate.Size = new Size(180, 33);
+            txtOrderDate.Size = new Size(187, 33);
             txtOrderDate.TabIndex = 7;
             // 
             // label1
@@ -214,7 +214,7 @@
             // 
             lbFreight.AutoSize = true;
             lbFreight.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            lbFreight.Location = new Point(18, 187);
+            lbFreight.Location = new Point(12, 187);
             lbFreight.Name = "lbFreight";
             lbFreight.Size = new Size(73, 25);
             lbFreight.TabIndex = 6;
@@ -223,9 +223,9 @@
             // txtFreight
             // 
             txtFreight.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            txtFreight.Location = new Point(146, 187);
+            txtFreight.Location = new Point(140, 187);
             txtFreight.Name = "txtFreight";
-            txtFreight.Size = new Size(181, 33);
+            txtFreight.Size = new Size(188, 33);
             txtFreight.TabIndex = 7;
             // 
             // datePickRequired
@@ -269,7 +269,7 @@
             Controls.Add(btnSave);
             Controls.Add(btnCancel);
             Controls.Add(btnDetail);
-            Controls.Add(btnOrder);
+            Controls.Add(btnOrderTitle);
             Name = "frmOrder";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "frmOrder";
@@ -281,7 +281,7 @@
 
         #endregion
 
-        private Button btnOrder;
+        private Button btnOrderTitle;
         private Button btnDetail;
         private Label lbTotal;
         private TextBox txtTotal;

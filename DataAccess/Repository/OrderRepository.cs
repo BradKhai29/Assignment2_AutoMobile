@@ -11,7 +11,7 @@ namespace DataAccess.Repository
 {
     public class OrderRepository : IOrderRepository
     {
-        public AbstractDAO<Order> DAO { get; set; }
+        public AbstractDAO<Order> DAO { get; }
 
         public OrderRepository(AppDbContext dbContext) 
             => DAO = new OrderDAO(dbContext);
@@ -20,7 +20,8 @@ namespace DataAccess.Repository
 
         public IList<Order> GetAll() => DAO.GetAll();
 
-        public Order GetByCondition(Func<Order, bool> condition) => DAO.GetByCondition(condition);
+        public Order GetByCondition(Func<Order, bool> condition) 
+            => DAO.GetByCondition(condition);
 
         public Order GetById(int id) => DAO.GetById(id);
 
@@ -28,9 +29,7 @@ namespace DataAccess.Repository
 
         public void Update(Order entity) => DAO.Update(entity);
 
-        public IList<Order> GetListByCondition(Func<Order, bool> condition)
-        {
-            return DAO.GetListByCondition(condition);
-        }
+        public IList<Order> GetListByCondition(Func<Order, bool> condition) 
+            => DAO.GetListByCondition(condition);
     }
 }

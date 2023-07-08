@@ -23,11 +23,11 @@ namespace MyStoreWinApp
             var loginMember = SessionService.Instance.GetSessionData<Member>(SessionId.LoginMember);
             bool isAdmin = loginMember.MemberId == 0;
 
-            bool updateProfile = UpdateMemberId != null
+            bool updateProfileByMember = UpdateMemberId != null
                                 && UpdateMemberId == loginMember.MemberId;
-            bool updateMemberByAdmin = UpdateMemberId != null && isAdmin && !DoInsert;
+            bool updateProfileByAdmin = UpdateMemberId != null && isAdmin && !DoInsert;
 
-            if (!DoInsert && (updateProfile || updateMemberByAdmin))
+            if (!DoInsert && (updateProfileByMember || updateProfileByAdmin))
             {
                 btnProfile.Text = $"Member ID: {UpdateMemberId}";
                 btnInsertOrUpdate.Visible = true;

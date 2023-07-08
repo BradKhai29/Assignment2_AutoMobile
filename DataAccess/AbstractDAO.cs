@@ -22,7 +22,7 @@ namespace DataAccess
         public abstract void Update(T entity);
         public abstract void Delete(int id);
 
-        public virtual IList<T> GetListByCondition(Func<T, bool> condition) => new List<T>();
         public virtual T GetByCondition(Func<T, bool> condition) => default;
+        public virtual IList<T> GetListByCondition(Func<T, bool> condition) => null;
     }
 }

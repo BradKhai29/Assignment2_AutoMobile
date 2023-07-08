@@ -33,6 +33,7 @@ namespace MyStoreWinApp
         private string currentSection = nameof(Product);
         private static Color defaultToolStripColor = default;
         private static Color activeToolStripColor = default;
+        private static readonly DateTimeHelper formatter = DateTimeHelper.Instance;
 
         public frmMain()
         {
@@ -118,7 +119,7 @@ namespace MyStoreWinApp
             bool loadDataGridView = isGuest && (currentSection == nameof(Product) || currentSection == "Shopping)");
             if (loadDataGridView)
             {
-                DataGridView_LoadWithSection(_product, null, currentSection);
+                DataGridView_LoadWithSection(_product, null, nameof(Product));
                 DisplaySearchComponents(true);
             }
             // Load Button section
@@ -289,7 +290,9 @@ namespace MyStoreWinApp
                     }
                     break;
                 case "Member":
-                    if (source is IList<Member> members)
+                    var loginMember = _session.GetSessionData<Member>(SessionId.LoginMember);
+                    bool isAdmin = loginMember != null && loginMember.MemberId == 0;
+                    if (source is IList<Member> members && isAdmin)
                     {
                         var newSource = members.Select(m => new { m.MemberId, m.Email, m.Password, m.CompanyName, m.City, m.Country }).ToList();
                         dgv_Main.DataSource = newSource;
@@ -305,10 +308,19 @@ namespace MyStoreWinApp
                     break;
                 case "Report":
                 case "Order":
+                    var outputFormat = BuiltInFormat.ddMMyyyy_HHmmss;
                     if (source is IList<Order> orders)
                     {
                         if (!doSearch) orders = ResolveOrders(_order.GetAll());
-                        var newSource = orders.Select(o => new { o.OrderId, o.member?.Email, o.OrderDate, o.RequiredDate, o.ShippedDate, o.Freight }).ToList();
+                        var newSource = orders.Select(o => new
+                        {
+                            o.OrderId,
+                            o.Member?.Email,
+                            OrderDate = formatter.ToStringWithFormat(o.OrderDate, outputFormat),
+                            RequiredDate = formatter.ToStringWithFormat(o.RequiredDate, outputFormat),
+                            ShippedDate = formatter.ToStringWithFormat(o.ShippedDate, outputFormat),
+                            o.Freight
+                        }).ToList();
                         dgv_Main.DataSource = newSource;
                         TextFieldBinding(
                             source: newSource,
@@ -356,6 +368,7 @@ namespace MyStoreWinApp
                         if (isAdmin) DisplayUpdateForm(updateItem, nameof(Member), false);
                         break;
 
+                    case nameof(toolStripReport):
                     case nameof(toolStripOrder):
                         DisplayUpdateForm(updateItem, nameof(Order), true);
                         break;
@@ -490,6 +503,7 @@ namespace MyStoreWinApp
                     case nameof(toolStripMember):
                         return _member.GetById(itemId);
 
+                    case nameof(toolStripReport):
                     case nameof(toolStripOrder):
                         return _order.GetById(itemId);
 
@@ -831,11 +845,11 @@ namespace MyStoreWinApp
                 }
                 if (menuStrip == toolStripOrder)
                 {
+                    DisplayDeleteAndNewButton(isDisplay: false);
+                    DisplaySearchComponents(isDisplay: false);
                     SetCurrentToolStripAndCurrentSection(
                         toolStrip: nameof(toolStripOrder),
                         section: nameof(Order));
-                    DisplayDeleteAndNewButton(isDisplay: false);
-                    DisplaySearchComponents(isDisplay: false);
                     Form_LoadWithSection(nameof(Order));
                 }
                 if (menuStrip == toolStripReport)
@@ -845,6 +859,7 @@ namespace MyStoreWinApp
                     SetCurrentToolStripAndCurrentSection(
                         toolStrip: nameof(toolStripReport),
                         section: "Report");
+                    Form_LoadWithSection(nameof(Order));
                 }
                 if (menuStrip == toolStripShopping)
                 {

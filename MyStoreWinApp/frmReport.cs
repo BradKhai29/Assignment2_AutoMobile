@@ -56,7 +56,7 @@ namespace MyStoreWinApp
                     order.TotalAmount = totalAmount;
                     DisplayTotalAmount += totalAmount;
                 });
-                var newSource = orders.Select(o => new { o.OrderId, o.member?.Email, o.OrderDate, o.TotalAmount, o.ShippedDate, o.Freight }).ToList();
+                var newSource = orders.Select(o => new { o.OrderId, o.Member?.Email, o.OrderDate, o.TotalAmount, o.ShippedDate, o.Freight }).ToList();
                 dgv_Main.DataSource = newSource;
                 txtTotalIncome.Text = DisplayTotalAmount.ToString();
                 txtTotalOrders.Text = newSource.Count().ToString();

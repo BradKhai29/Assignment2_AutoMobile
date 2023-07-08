@@ -32,7 +32,7 @@ namespace BusinessObject
 
         #region Relationships
         [ForeignKey(nameof(MemberId))]
-        public Member member { get; set; }
+        public Member Member { get; set; }
 
         public ICollection<OrderDetail> Details { get; set; }
         #endregion

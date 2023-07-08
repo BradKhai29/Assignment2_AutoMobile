@@ -34,7 +34,7 @@ namespace DataAccess
         }
 
         public override Product GetById(int id)
-            => dbContext.Products.AsNoTracking().FirstOrDefault(product => product.ProductId == id);
+            => dbContext.Products.Include(p => p.Category).AsNoTracking().FirstOrDefault(product => product.ProductId == id);
 
         public override DatabaseResponse<Product> Insert(Product entity)
         {

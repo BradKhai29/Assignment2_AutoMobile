@@ -11,7 +11,7 @@ namespace DataAccess.Repository
 {
     public class CategoryRepository : ICategoryRepository
     {
-        public AbstractDAO<Category> DAO { get; private set; }
+        public AbstractDAO<Category> DAO { get; }
 
         public CategoryRepository(AppDbContext dbContext) 
             => DAO = new CategoryDAO(dbContext);

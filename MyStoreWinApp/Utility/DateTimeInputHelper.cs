@@ -60,19 +60,5 @@ namespace MyStoreWinApp.Utility
             stringBuilder.Append(date).Append('/').Append(month).Append('/').Append(year);
             return stringBuilder.ToString();
         }
-
-        public static string ToVietnameseDate(DateTime dateTime)
-        {
-            return dateTime.ToString(DateFormat);
-        }
-
-        public static DateTime ParseWithFormat(string vietnameDateTime)
-        {
-            return DateTime.ParseExact(
-                    vietnameDateTime,
-                    format: DateFormat,
-                    provider: CultureInfo.InvariantCulture,
-                    style: DateTimeStyles.None);
-        }
     }
 }

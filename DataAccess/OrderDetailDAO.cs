@@ -24,7 +24,7 @@ namespace DataAccess
 
         public override OrderDetail GetByCondition(Func<OrderDetail, bool> condition)
         {
-            return dbContext.OrderDetails.AsNoTracking().FirstOrDefault(order => condition(order));
+            return dbContext.OrderDetails.AsNoTracking().FirstOrDefault(condition);
         }
 
         public override IList<OrderDetail> GetListByCondition(Func<OrderDetail, bool> condition)

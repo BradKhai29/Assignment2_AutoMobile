@@ -16,8 +16,8 @@ namespace DataAccess
 
         public bool CheckExistEmail(string email)
         {
-            var account = GetByCondition(m => m.Email == email);
-            return account != null;
+            bool isExist = dbContext.Members.Any(m => m.Email == email);
+            return isExist;
         }
 
         public override void Delete(int id)
@@ -28,7 +28,7 @@ namespace DataAccess
                 bool haveOrders = dbContext.Orders.AsNoTracking().Any(order => order.MemberId == id);
                 if (haveOrders)
                 {
-                    throw new ArgumentException("Cannot delete because some Orders is belonged to this Member Id");
+                    throw new ArgumentException("Cannot delete because some orders is belonged to this Member");
                 }
 
                 dbContext.Members.Remove(member);

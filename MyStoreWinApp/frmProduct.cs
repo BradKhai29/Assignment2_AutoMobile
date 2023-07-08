@@ -33,6 +33,7 @@ namespace MyStoreWinApp
             cbAvailable.Visible = !DoInsert;
             cbAvailable.Checked = DoInsert ? true : product!.IsAvailable;
             // Button section
+            btnProduct.Text = DoInsert ? "PRODUCT FORM" : $"Product ID : {UpdateProductId}";
             btnCreateOrUpdate.Text = DoInsert ? "Create" : "Update";
         }
 
@@ -66,7 +67,10 @@ namespace MyStoreWinApp
                     IsAvailable = cbAvailable.Checked
                 };
 
-                Validator.ValidateObject(product, new ValidationContext(product), validateAllProperties: true);
+                Validator.ValidateObject(
+                    instance: product, 
+                    validationContext: new ValidationContext(product), 
+                    validateAllProperties: true);
                 if (DoInsert) _repo.Insert(product);
                 else
                 {

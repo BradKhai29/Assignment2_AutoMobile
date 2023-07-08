@@ -26,11 +26,11 @@ namespace DataAccess
             }
         }
 
-        public override IList<Order> GetAll() => dbContext.Orders.Include(o => o.member).AsNoTracking().ToList();
+        public override IList<Order> GetAll() => dbContext.Orders.Include(o => o.Member).AsNoTracking().ToList();
 
         public override IList<Order> GetListByCondition(Func<Order, bool> condition)
         {
-            return dbContext.Orders.Include(nameof(Order.member)).AsNoTracking().Where(condition).ToList();
+            return dbContext.Orders.Include(nameof(Order.Member)).AsNoTracking().Where(condition).ToList();
         }
 
         public override Order GetById(int id) 

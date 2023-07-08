@@ -36,17 +36,17 @@ namespace MyStoreWinApp
         {
             // Load order
             var order = orderContext.Orders.First(o => o.OrderId == OrderId);
-            orderContext.Entry(order).Reference(o => o.member).Load();
+            orderContext.Entry(order).Reference(o => o.Member).Load();
 
             // Load related information to textbox
-            txtEmail.Text = order.member?.Email;
-            txtOrderDate.Text = formatter.ToStringWithCurrentOutputFormat(order.OrderDate);
+            txtEmail.Text = order.Member?.Email;
+            txtOrderDate.Text = formatter.ToStringWithFormat(order.OrderDate, BuiltInFormat.ddMMyyyy_HHmmss);
             txtTotal.Text = GetTotal(order).ToString();
             if (order.RequiredDate != null) mtxtRequiredDate.Text = formatter.ToStringWithCurrentOutputFormat(order.RequiredDate.Value);
             if (order.ShippedDate != null) mtxtShipDate.Text = formatter.ToStringWithCurrentOutputFormat(order.ShippedDate.Value);
             if (order.Freight != default) txtFreight.Text = decimal.ToInt32(order.Freight.Value).ToString();
 
-            btnDetail.Text = $"Order ID: {OrderId}";
+            btnOrderTitle.Text = $"Order ID: {OrderId}";
             Form_Load(isAdmin: IsAdmin);
             EnableDateTimePicker(isAdmin: IsAdmin);
             Load_DataGridView(order);
@@ -116,7 +116,7 @@ namespace MyStoreWinApp
                         MessageBox.Show("Please enter the Shipped date later than the order date", "Input Error");
                         isValid &= false;
                     }
-                    else order.ShippedDate = DateTimeInputHelper.ParseWithFormat(mtxtShipDate.Text);
+                    else order.ShippedDate = formatter.ToDateTimeWithFormat(mtxtShipDate.Text);
                 }
                 if (enterFreight)
                 {
@@ -139,7 +139,7 @@ namespace MyStoreWinApp
                 if (!inputHelper.ValidateInput()) MessageBox.Show("Please enter the Required Date later than the order date", "Input Error");
                 else
                 {
-                    order.RequiredDate = DateTimeInputHelper.ParseWithFormat(mtxtRequiredDate.Text);
+                    order.RequiredDate = formatter.ToDateTimeWithFormat(mtxtRequiredDate.Text);
                     _repo.Update(order);
                     Close();
                 }

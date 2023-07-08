@@ -25,10 +25,10 @@ namespace BusinessObject
 
         #region Relationships
         [ForeignKey(nameof(OrderId))]
-        public Order order { get; set; }
+        public Order Order { get; set; }
 
         [ForeignKey(nameof(ProductId))]
-        public Product product { get; set; }
+        public Product PaidProduct { get; set; }
         #endregion
     }
 }
