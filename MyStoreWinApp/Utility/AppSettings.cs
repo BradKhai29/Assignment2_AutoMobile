@@ -48,8 +48,7 @@ public sealed class AppSettings
     private string GetConnectionString(IConfigurationRoot configurationRoot)
     {
         // Get connectionString and modify the DatabaseName
-        return configurationRoot.GetConnectionString(name: connectionName)
-                                .Replace(oldValue: "[DatabaseName]", newValue: databaseName);
+        return configurationRoot.GetConnectionString(name: connectionName);
     }
 
     private Member GetAdminAccount(IConfigurationRoot configurationRoot)

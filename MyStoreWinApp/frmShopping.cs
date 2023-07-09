@@ -14,6 +14,7 @@ namespace MyStoreWinApp
         #endregion
 
         private readonly ISessionService sessionService = SessionService.Instance;
+        private int lastSelectedRowIndex = -1;
 
         public frmShopping()
         {
@@ -252,6 +253,10 @@ namespace MyStoreWinApp
             }
             btnTotalPrice.Text = $"Total Price: {totalPrice}";
             dgv_OrderDetail.DataSource = source;
+            if (lastSelectedRowIndex >= 0)
+            {
+                dgv_OrderDetail.Rows[lastSelectedRowIndex].Selected = true;
+            }
 
             AutoFitDataGridItem(dgv_OrderDetail);
         }
@@ -303,6 +308,8 @@ namespace MyStoreWinApp
             {
                 int rowIndex = dgv_OrderDetail.SelectedRows[0].Index;
                 var row = dgv_OrderDetail.Rows[rowIndex];
+                lastSelectedRowIndex = rowIndex;
+
                 var itemIdColumn = row.Cells[0];
                 int itemId = int.Parse($"{itemIdColumn.Value}");
 
